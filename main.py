@@ -76,6 +76,6 @@ class Classifier(object):
 if __name__ == '__main__':
     c = Classifier()
     c.train('cat', 'so very cuddly')
-    c.train('doc', 'a cuddly thing')
+    c.train('baby', 'likes to be cuddly')
     print c.prob_category('cat', 'cuddly bear')
     print c.getUsefulWords('This is a very neat piece of text')
