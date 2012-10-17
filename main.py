@@ -52,7 +52,7 @@ class Classifier(object):
         self.total_category_trains[category] = cat_trains + 1
         self.total_trains += 1
 
-    def prob_category(self, category, text):
+    def probCategory(self, category, text):
         '''Probability text is in given category'''
         if category not in self.category_data:
             return -1
@@ -77,5 +77,4 @@ if __name__ == '__main__':
     c = Classifier()
     c.train('cat', 'so very cuddly')
     c.train('baby', 'likes to be cuddly')
-    print c.prob_category('cat', 'cuddly bear')
-    print c.getUsefulWords('This is a very neat piece of text')
+    print c.probCategory('cat', 'cuddly bear')
