@@ -67,13 +67,13 @@ class NaiveBayes(classifier.Classifier):
 
             p_word_given_category = (float(word_cat_cnt) / 
                                     self._category_num_samples[category])
-            print 'word prob for %s: %f' % (word, p_word_given_category)
+            #print 'word prob for %s: %f' % (word, p_word_given_category)
             p_text_given_category *= p_word_given_category
 
-        print 'prob text given category is %f' % p_text_given_category
+        #print 'prob text given category is %f' % p_text_given_category
         p_category = (self._category_num_samples[category] /
                      float(self.num_samples))
         num = p_text_given_category * p_category
         p_text = float(1) / self.num_samples
-        print 'prob for text is %f' % (p_text)
+        #print 'prob for text is %f' % (p_text)
         return num / p_text

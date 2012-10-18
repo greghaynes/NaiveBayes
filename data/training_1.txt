@@ -1,0 +1,8 @@
+meat: Pork tacos are great
+not_meat: Creating email filters is hard
+meat: The ammount of taxes is 12.5
+not_meat: customer will buy our computer
+not_meat: A full term of tuition will cost 5000
+meat: steak is a great type of meat
+meat: bugers are great for grilling
+
