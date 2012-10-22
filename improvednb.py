@@ -9,6 +9,7 @@ class CategoryInfo(object):
         self.document_count = 0
 
     def handle_document(self, document):
+        '''A document is a list of words'''
         for word in document:
             self.handle_word(word)
         self.document_count += 1
