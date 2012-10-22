@@ -20,7 +20,13 @@ class CategoryInfo(object):
         self.total_word_count += 1
 
 class ImprovedNB(classifier.Classifier):
-    '''An improved version of the naive bayes filter'''
+    '''
+    An improved version of the naive bayes filter
+
+    This version features +1 smoothing to avoid overfitting and evidence
+    addition using the logarithm of bayes rule to avoid floating point
+    underflow.
+    '''
 
     def __init__(self,
                  language='english',
