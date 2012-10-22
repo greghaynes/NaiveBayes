@@ -9,8 +9,7 @@ class CategoryInfo(object):
         self.document_count = 0
 
     def handle_document(self, document):
-        words = document.split(' ')
-        for word in words:
+        for word in document:
             self.handle_word(word)
         self.document_count += 1
 
@@ -50,10 +49,10 @@ class ImprovedNB(classifier.Classifier):
             P(T_k|c) = number of times T_k has appeared in class C docs + 1 /
                        number of words in class C docs + 1
         '''
-        if category not in self.categories:
+        try:
+            cat_info = self.categories[category]
+        except KeyError:
             return -1
-
-        cat_info = self.categories[category]
         p_c = math.log(float(cat_info.document_count) / self.document_count)
 
         useful_words = self.useful_words(text)
@@ -68,11 +67,11 @@ class ImprovedNB(classifier.Classifier):
 
         p_d = math.log(1 / float(self.document_count))
 
-        return p_c + p_t_c - p_d
+        return math.exp(p_c + p_t_c - p_d)
  
     def train(self, category, text):
-        cat_info = self.categories.get(categories, CategoryInfo())
-        cat_info.handle_document(text)
+        cat_info = self.categories.get(category, CategoryInfo())
+        cat_info.handle_document(self.useful_words(text))
         self.categories[category] = cat_info
         self.document_count += 1
 
