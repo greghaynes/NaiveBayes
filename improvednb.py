@@ -29,11 +29,32 @@ class ImprovedNB(classifier.Classifier):
     '''
 
     def __init__(self,
+                 multinominal=False,
                  language='english',
                  common_words_path='data/commonwords.txt'):
+        '''
+        Initialize the imrpoved naive bayes classifier
+
+        If multinominal is true then documents are classified by the count of
+        each unique word per document. Otherwise documents are classified using
+        a bernoulli model describing the occurence of a unique work in the
+        document.
+        '''
         super(ImprovedNB, self).__init__(language, common_words_path)
+        self.multinominal = multinominal
         self.categories = {}
         self.document_count = 0
+
+    def useful_words(self, text):
+        if self.multinominal:
+            all_words = text.replace('\n', ' ').split(' ')
+            usefuls = []
+            for word in all_words:
+                if word  in self.common_words:
+                    continue
+                usefuls.append(self.word_stemmer.stemWord(word))
+            return usefuls
+        return super(ImprovedNB, self).useful_words(text)
 
     def text_category_probability(self, category, text):
         '''
@@ -63,8 +84,12 @@ class ImprovedNB(classifier.Classifier):
         p_c = math.log(float(cat_info.document_count) / self.document_count)
 
         useful_words = self.useful_words(text)
+        seen_words = {}
         p_t_c = 0
         for word in useful_words:
+            if word in seen_words:
+                continue
+            seen_words[word] = True
             word_cnt = float(cat_info.word_counts.get(word, 0))
             class_words_cnt = float(cat_info.total_word_count)
 

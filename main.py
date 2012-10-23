@@ -12,12 +12,18 @@ def train_from_file(classifier, data_path):
 if __name__ == '__main__':
     c1 = NaiveBayes()
     c2 = ImprovedNB()
-    train_from_file(c1, 'data/training_1.txt')
-    train_from_file(c2, 'data/training_1.txt')
+    c3 = ImprovedNB(multinominal=True)
+    classifiers = [c1, c2, c3]
+
+    for classifier in classifiers:
+        train_from_file(classifier, 'data/training_1.txt')
 
     print 'trying meat'
-    print 'c1:', c1.text_category_probability('meat', 'I want a taco')
-    print 'c2:', c2.text_category_probability('meat', 'I want a taco')
-    print 'c1:', c1.text_category_probability('not_meat', 'I want a taco')
-    print 'c2:', c2.text_category_probability('not_meat', 'I want a taco')
+    for classifier in classifiers:
+        print classifier.text_category_probability('meat', 'I want a taco')
+
+    print 'trying not meat'
+    for classifier in classifiers:
+        print classifier.text_category_probability('not_meat',
+            'Salads are nice')
 

@@ -31,7 +31,7 @@ class Classifier(object):
 
     def useful_words(self, text):
         '''Grab a list of unique words where each word is not a common word'''
-        text.replace('\n', ' ')
+        text = text.replace('\n', ' ')
         all_words = text.split(' ')
         useful_words_dict = {}
         for word in all_words:
