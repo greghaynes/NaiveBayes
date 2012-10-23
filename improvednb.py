@@ -44,6 +44,7 @@ class ImprovedNB(classifier.Classifier):
         self.multinominal = multinominal
         self.categories = {}
         self.document_count = 0
+        self.words_seen = {}
 
     def useful_words(self, text):
         if self.multinominal:
@@ -75,7 +76,7 @@ class ImprovedNB(classifier.Classifier):
         avoid overfitting (otherwise 0 values for a T_k will drive the whole
         solution to 0:
             P(T_k|c) = number of times T_k has appeared in class C docs + 1 /
-                       number of words in class C docs + 1
+                       number of words in class C docs + | Vocabulary |
         '''
         try:
             cat_info = self.categories[category]
@@ -94,7 +95,11 @@ class ImprovedNB(classifier.Classifier):
             class_words_cnt = float(cat_info.total_word_count)
 
             # +1 is used to prevent overfitting
-            p_tk_c = (word_cnt + 1) / (class_words_cnt + 1)
+            p_tk_c = (word_cnt + 1)
+            if self.multinominal:
+                p_tk_c /= float(class_words_cnt + len(self.words_seen))
+            else:
+                p_tk_c /= float(class_words_cnt + 2)
             p_t_c += math.log(p_tk_c)
 
         p_d = math.log(1 / float(self.document_count))
@@ -103,7 +108,10 @@ class ImprovedNB(classifier.Classifier):
  
     def train(self, category, text):
         cat_info = self.categories.get(category, CategoryInfo())
-        cat_info.handle_document(self.useful_words(text))
+        useful_words = self.useful_words(text)
+        for word in useful_words:
+            self.words_seen[word] = True
+        cat_info.handle_document(useful_words)
         self.categories[category] = cat_info
         self.document_count += 1
 
